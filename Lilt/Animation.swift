@@ -11,8 +11,8 @@ private var animatedViews = Set<UIView>()
 public protocol AnimatableView {
     associatedtype T = Self
     
-    func animate(if animated: Bool, withDuration duration: TimeInterval, curve: AnimationCurve, beginsFromCurrentState: Bool, animations: (T) -> Void)
-    func animate(if animated: Bool, withDuration duration: TimeInterval, curve: AnimationCurve, beginsFromCurrentState: Bool, animations: (T) -> Void, completion: (() -> Void)?)
+    func animate(if animated: Bool, withDuration duration: TimeInterval, curve: Lilt.AnimationCurve, beginsFromCurrentState: Bool, animations: (T) -> Void)
+    func animate(if animated: Bool, withDuration duration: TimeInterval, curve: Lilt.AnimationCurve, beginsFromCurrentState: Bool, animations: (T) -> Void, completion: (() -> Void)?)
     func animateOrganically(if animated: Bool, withDuration duration: TimeInterval, animations: @escaping (T) -> Void)
     func animateOrganically(if animated: Bool, withDuration duration: TimeInterval, animations: @escaping (T) -> Void, completion: (() -> Void)?)
     func crossfade(if animated: Bool, withDuration duration: TimeInterval, animations: @escaping (T) -> Void)
@@ -20,11 +20,11 @@ public protocol AnimatableView {
 }
 
 public extension AnimatableView where Self: UIView {
-    func animate(if animated: Bool = true, withDuration duration: TimeInterval = .defaultDuration, curve: AnimationCurve = .init(ease: .inOut), beginsFromCurrentState: Bool = true, animations: (Self) -> Void) {
+    func animate(if animated: Bool = true, withDuration duration: TimeInterval = .defaultDuration, curve: Lilt.AnimationCurve = .init(ease: .inOut), beginsFromCurrentState: Bool = true, animations: (Self) -> Void) {
         animate(if: animated, withDuration: duration, curve: curve, beginsFromCurrentState: beginsFromCurrentState, animations: animations, completion: nil)
     }
     
-    func animate(if animated: Bool = true, withDuration duration: TimeInterval = .defaultDuration, curve: AnimationCurve = .init(ease: .inOut), beginsFromCurrentState: Bool = true, animations: (Self) -> Void, completion: (() -> Void)?) {
+    func animate(if animated: Bool = true, withDuration duration: TimeInterval = .defaultDuration, curve: Lilt.AnimationCurve = .init(ease: .inOut), beginsFromCurrentState: Bool = true, animations: (Self) -> Void, completion: (() -> Void)?) {
         if animated {
             Lilt.animate(view: self, withDuration: duration, curve: curve, beginsFromCurrentState: beginsFromCurrentState, animations: { animations(self) }, completion: completion)
         } else {
@@ -80,11 +80,11 @@ public extension UIView {
         }
     }
     
-    func animateProperty<T: Animatable>(_ property: T, toValue value: T, withDuration duration: TimeInterval = .defaultDuration, curve: AnimationCurve = .init(ease: .inOut), setter: @escaping (T) -> Void) {
+    func animateProperty<T: Animatable>(_ property: T, toValue value: T, withDuration duration: TimeInterval = .defaultDuration, curve: Lilt.AnimationCurve = .init(ease: .inOut), setter: @escaping (T) -> Void) {
         animateProperty(property, toValue: value, withDuration: duration, curve: curve, setter: setter, completion: nil)
     }
     
-    func animateProperty<T: Animatable>(_ property: T, toValue value: T, withDuration duration: TimeInterval = .defaultDuration, curve: AnimationCurve = .init(ease: .inOut), setter: @escaping (T) -> Void, completion: (() -> Void)? = nil) {
+    func animateProperty<T: Animatable>(_ property: T, toValue value: T, withDuration duration: TimeInterval = .defaultDuration, curve: Lilt.AnimationCurve = .init(ease: .inOut), setter: @escaping (T) -> Void, completion: (() -> Void)? = nil) {
         let animator = Animator(value: value, initialValue: property, duration: duration, curve: curve, setter: setter) {
             self.endAnimation(withCompletion: completion)
         }
@@ -105,6 +105,14 @@ public extension CABasicAnimation {
     }
 }
 
+public extension CAMediaTimingFunction {
+    convenience init(timingParameters: UICubicTimingParameters) {
+        let controlPoint1 = timingParameters.controlPoint1
+        let controlPoint2 = timingParameters.controlPoint2
+        self.init(controlPoints: Float(controlPoint1.x), Float(controlPoint1.y), Float(controlPoint2.x), Float(controlPoint2.y))
+    }
+}
+
 private func animateOrganically(view: UIView?, duration: TimeInterval = .defaultDuration, animations: @escaping () -> Void, completion: (() -> Void)? = nil) {
     let finish = {
         if let view = view {
@@ -120,7 +128,7 @@ private func animateOrganically(view: UIView?, duration: TimeInterval = .default
     }
 }
 
-private func animate(view: UIView?, withDuration duration: TimeInterval = .defaultDuration, curve: AnimationCurve, beginsFromCurrentState: Bool, animations: () -> Void, completion: (() -> Void)?) {
+private func animate(view: UIView?, withDuration duration: TimeInterval = .defaultDuration, curve: Lilt.AnimationCurve, beginsFromCurrentState: Bool, animations: () -> Void, completion: (() -> Void)?) {
     let finish = {
         if let view = view {
             view.endAnimation(withCompletion: completion)

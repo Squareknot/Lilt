@@ -1,5 +1,5 @@
 //
-//  AnimationCurve.swift
+//  Lilt.AnimationCurve.swift
 //  Lilt
 //
 //  Created by Jordan Kay on 9/5/15.

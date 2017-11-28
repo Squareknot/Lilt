@@ -10,14 +10,14 @@ class Animator<T: Animatable> {
     private let value: T
     private let initialValue: T
     private let duration: TimeInterval
-    private let curve: AnimationCurve
+    private let curve: Lilt.AnimationCurve
     private let setter: (T) -> Void
     private let completion: (() -> Void)?
     
     private var displayLink: CADisplayLink!
     private var initialTimestamp: TimeInterval!
     
-    init(value: T, initialValue: T, duration: TimeInterval, curve: AnimationCurve, setter: @escaping (T) -> Void, completion: (() -> Void)?) {
+    init(value: T, initialValue: T, duration: TimeInterval, curve: Lilt.AnimationCurve, setter: @escaping (T) -> Void, completion: (() -> Void)?) {
         self.value = value
         self.initialValue = initialValue
         self.duration = duration
