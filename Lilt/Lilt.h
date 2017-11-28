@@ -3,7 +3,7 @@
 //  Lilt
 //
 //  Created by Jordan Kay on 9/5/15.
-//  Copyright © 2015 jordanekay. All rights reserved.
+//  Copyright © 2015 Squareknot. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
