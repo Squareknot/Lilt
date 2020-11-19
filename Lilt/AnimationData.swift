@@ -8,9 +8,9 @@
 
 let animationData: [Curve: [Easing: Info]] = [
     .sine: [
-        .in: .name(kCAMediaTimingFunctionEaseIn),
-        .out: .name(kCAMediaTimingFunctionEaseOut),
-        .inOut: .name(kCAMediaTimingFunctionEaseInEaseOut)
+        .in: .name(CAMediaTimingFunctionName.easeIn.rawValue),
+        .out: .name(CAMediaTimingFunctionName.easeOut.rawValue),
+        .inOut: .name(CAMediaTimingFunctionName.easeInEaseOut.rawValue)
     ],
     .quad: [
         .in: .points((0.55, 0.085, 0.68, 0.53)),

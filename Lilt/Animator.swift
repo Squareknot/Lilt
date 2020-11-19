@@ -28,7 +28,7 @@ class Animator<T: Animatable> {
     
     func animate() {
         displayLink = CADisplayLink(target: self, selector: #selector(Animator.update))
-        displayLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
+        displayLink.add(to: RunLoop.main, forMode: RunLoop.Mode.common)
     }
     
     @objc private dynamic func update() {

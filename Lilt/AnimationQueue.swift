@@ -35,11 +35,11 @@ public class AnimationQueue {
         blocks = []
     }
     
-    public func animate(withDuration duration: TimeInterval, delay: TimeInterval = 0, options: UIViewAnimationOptions = [], animations: @escaping () -> Void) {
+    public func animate(withDuration duration: TimeInterval, delay: TimeInterval = 0, options: UIView.AnimationOptions = [], animations: @escaping () -> Void) {
         animate(withDuration: duration, delay: delay, options: options, animations: animations, completion: nil)
     }
     
-    public func animate(withDuration duration: TimeInterval, delay: TimeInterval = 0, options: UIViewAnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
+    public func animate(withDuration duration: TimeInterval, delay: TimeInterval = 0, options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
         performAnimationsSerially { [weak self] in
             if let strongSelf = self {
                 UIView.animate(withDuration: duration, delay: delay, options: options, animations: animations) { finished in
@@ -49,11 +49,11 @@ public class AnimationQueue {
         }
     }
     
-    public func transition(with view: UIView, duration: TimeInterval, options: UIViewAnimationOptions = [], animations: @escaping () -> Void) {
+    public func transition(with view: UIView, duration: TimeInterval, options: UIView.AnimationOptions = [], animations: @escaping () -> Void) {
         transition(with: view, duration: duration, options: options, animations: animations, completion: nil)
     }
     
-    public func transition(with view: UIView, duration: TimeInterval, options: UIViewAnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
+    public func transition(with view: UIView, duration: TimeInterval, options: UIView.AnimationOptions = [], animations: @escaping () -> Void, completion: ((Bool) -> Void)?) {
         performAnimationsSerially { [weak self, weak view] in
             if let strongSelf = self, let view = view {
                 UIView.transition(with: view, duration: duration, options: options, animations: animations) { finished in
