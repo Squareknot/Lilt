@@ -41,13 +41,13 @@ public struct AnimationCurve {
     var timingFunction: TimingFunction {
         switch curveType {
         case .linear:
-            return CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
+            return CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
         case .spring:
             return SpringTimingFunction()
         default:
             switch animationData[curveType]![easing]! {
             case let .name(name):
-                return CAMediaTimingFunction(name: name)
+                return CAMediaTimingFunction(name: CAMediaTimingFunctionName(rawValue: name))
             case let .points(c1x, c1y, c2x, c2y):
                 return CAMediaTimingFunction(controlPoints: c1x, c1y, c2x, c2y)
             }
@@ -65,7 +65,7 @@ extension CAMediaTimingFunction: TimingFunction {
         let values = UnsafeMutablePointer<Float>.allocate(capacity: 2)
         self.getControlPoint(at: i, values: values)
         let p = Double(values[1])
-        values.deallocate(capacity: 2)
+        values.deallocate()
         return p
     }
     
